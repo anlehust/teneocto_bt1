@@ -1,117 +1,150 @@
 <html>
+
 <head>
     <style>
-    .addfile { 
-        position: fixed;
-    top: 0px;
-    right: 0px;
-    background-color: #026b97;
-    width: 100%;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    z-index:3;
-    }
-    .addfile-left{
-        display: flex;
-    position:absolute;
-    height:100%;
-    width:50%;
-    top:0px;
-    left:10px;
-    align-items:center;
-    justify-content:flex-start;
-    }
-    .addfile-right{
-        position: absolute;
-    height: 100%;
-    top: 0;
-    right: 0;
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: white;
-    }
-    .name,.description,.name1,.description1{
-        display: flex;
-        margin: 5px;
-    }
-    
-    #name,#description,#editname,#editdescription{
-        width:300px ;
-        height: 50px;
-        margin: 5px;
-    }
-    .listFile { 
-        position: fixed;
-    top: 300px;
-    right: 0px;
-    background-color:cyan;
-    width: 100%;
-    height: 600px;
-    display: flex;
-    align-items: center;
-    z-index:3;
-    }
-    .file-left{
-        display: flex;
-    position:absolute;
-    height:50%;
-    width:50%;
-    top:0px;
-    left:10px;
-    align-items:center;
-    justify-content:flex-start;
-    }
-    .file-right{
-        position: absolute;
-    height: 50%;
-    top: 0;
-    right: 0;
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color:black;
-    }
-    .edittable{
-        position: fixed;
-    top: 300px;
-    right: 0px;
-    background-color: brown;
-    width: 100%;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    z-index:3;
-    }
-    #editTable{
-        display: none;
-    }
+        input {
+            padding: 3px;
+        }
+
+        .addfile {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            background-color: #026b97;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .addfile-left {
+            display: flex;
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            top: 0px;
+            left: 10px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .addfile-right {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            right: 0;
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: white;
+        }
+
+        .name,
+        .description,
+        .name1,
+        .description1 {
+            display: flex;
+            margin: 5px;
+        }
+
+        #name,
+        #description,
+        #editname,
+        #editdescription {
+            width: 300px;
+            height: 50px;
+            margin: 5px;
+        }
+
+        .listFile {
+            position: fixed;
+            top: 300px;
+            right: 0px;
+            width: 100%;
+            height: 600px;
+            /* display: flex; */
+            align-items: center;
+            z-index: 3;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .file-left {
+            display: flex;
+            position: absolute;
+            height: 50%;
+            width: 50%;
+            top: 0px;
+            left: 10px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .file-right {
+            position: absolute;
+            height: 50%;
+            top: 0;
+            right: 0;
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: black;
+        }
+
+        .edittable {
+            position: fixed;
+            top: 300px;
+            right: 0px;
+            background-color: brown;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            z-index: 3;
+        }
+
+        #editTable {
+            display: none;
+        }
+
+        .file {
+            height: 300px;
+            width: 100%;
+            position: relative;
+            margin-bottom: 5px;
+            background-color: aqua;
+        }
+        img{
+            height: 100px;
+            width: 100px;
+        }
     </style>
 </head>
+
 <body>
     <div class="addfile">
         <div class="addfile-left">
             <div id="choosefile">
-                    <input type="file" id="myFile">
-                    
+                <input type="file" class="chooseimg">
+
             </div>
         </div>
-    <div class="addfile-right">
-        <div>
-        <div class="name">
-            <input id="name" property="name">
-            <p>Name</p>
+        <div class="addfile-right">
+            <div>
+                <div class="name">
+                    <input id="name" property="name">
+                    <p>Name</p>
+                </div>
+                <div class="description">
+                    <input id="description" property="description">
+                    <p>Description</p>
+                </div>
+                <div><button id="btn-addnew" onclick="addNew()"> Add</button></div>
+            </div>
         </div>
-        <div class="description">
-                <input id="description" property="description">
-                <p>Description</p>
-        </div>
-        <div><button id="btn-addnew" onclick="addNew()"> Add</button></div>
-        </div>
-    </div>
     </div>
     <div class="listFile">
         <div class="file">
@@ -119,95 +152,131 @@
                 <div class="image">
 
                 </div>
-                <img src="C:/Users/teneocto/Documents/4563e501ee9286bec17768d3b8065808487v2_hq.jpg" />
+                <input type="file">
             </div>
             <div class="file-right">
                 <div>
-                <div class="name1">
-                    <div id="name1">picture1</div>
-                    <p>Name</p>
-                </div>
-                <div class="description1">
-                    <div id="description1">flower</div>
-                    <p>Description</p>
-                </div>
-                <button onclick="openEditTable()">Edit</button>
+                    <div class="name1">
+                        <input id="name1" readonly value="name">
+                        <p>Name</p>
+                    </div>
+                    <div class="description1">
+                        <input id="description1" readonly='readonly' value="description">
+                        <p>Description</p>
+                    </div>
+                    <button onclick="openEditTable()">Edit</button>
                 </div>
             </div>
         </div>
     </div>
     <div id="editTable">
-        <div><h1>EDIT</h1></div>
-    <div class="edittable">
-        
-        <div class="file">
-            <div class="file-left">
-                <div class="image">
-                    
+        <div>
+            <h1>EDIT</h1>
+        </div>
+        <div class="edittable">
+
+            <div class="file">
+                <div class="file-left">
+                    <div class="image">
+
+                    </div>
+                    <img/>
                 </div>
-                <img src="C:/Users/teneocto/Documents/4563e501ee9286bec17768d3b8065808487v2_hq.jpg" />
-            </div>
-            <div class="file-right">
-                <div>
-                <div class="name1">
-                    <input id="editname" value="picture1">
-                    <p>Name</p>
-                </div>
-                <div class="description1">
-                    <input id="editdescription" value="flower">
-                    <p>Description</p>
-                </div>
-                <button >Save</button>
-                <button >Delete</button>
-                <button onclick="exitEdit()">Exit</button>
+                <div class="file-right">
+                    <div>
+                        <div class="name1">
+                            <input id="editname" value="picture1">
+                            <p>Name</p>
+                        </div>
+                        <div class="description1">
+                            <input id="editdescription" value="flower">
+                            <p>Description</p>
+                        </div>
+                        <button>Save</button>
+                        <button>Delete</button>
+                        <button onclick="exitEdit()">Exit</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     <script type="text/javascript">
-	console.log('1');
-        function openEditTable(){
+        console.log('1');
+
+        function openEditTable() {
             var x = document.getElementById("editTable");
- 
-    if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-  }
-        
-        function exitEdit(){
+
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        function exitEdit() {
             var x = document.getElementById("editTable");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  }
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            }
         }
-        function addNew(){
-            var file= document.createElement("div");
-            // file.setAttribute('class','file');
-            var fileleft = document.createElement("div");
-            fileleft.setAttribute('class','file-left');
-            var fileright = document.createElement("div");
-            fileright.setAttribute('class','file-right');
-            var image = document.createElement("div");
-            image.setAttribute('class','image');
-            var div =document.createElement("div");
-            var name =document.createElement("div");
-            name.setAttribute('class','name1');
-            var description = document.createElement("div");
-            description.setAttribute('class','description1');
-            var para = document.createElement("P");
-            para.innerHTML = "This is a paragraph.";
-            name.appendChild(para);
-            div.appendChild(name);
-            div.appendChild(description);
-            fileright.appendChild(div);
-            fileleft.appendChild(image);
-            file.appendChild(fileleft);
-            file.appendChild(fileright);
-            document.getElementsByClassName("listFile").appendChild(file);
-        }
+        // function addNew(){
+        //     var nameValue=document.getElementById("name").value ;
+        //     var desValue=document.getElementById("description").value ;
+        //     var file= document.createElement("div");
+        //     file.setAttribute('class','file');
+        //     var fileleft = document.createElement("div");
+        //     fileleft.setAttribute('class','file-left');
+        //     var fileright = document.createElement("div");
+        //     fileright.setAttribute('class','file-right');
+        //     var image = document.createElement("div");
+        //     image.setAttribute('class','image');
+        //     var div =document.createElement("div");
+        //     var name =document.createElement("div");
+        //     name.setAttribute('class','name1');
+        //     var description = document.createElement("div");
+        //     description.setAttribute('class','description1');
+        //     var para = document.createElement("P");
+        //     para.innerHTML = "Name";
+        //     name.appendChild(para);
+        //     var para1 = document.createElement("P");
+        //     para1.innerHTML = "Description";
+        //     description.appendChild(para1);
+        //     var btnedit= document.createElement("button");
+        //     btnedit.innerHTML="Edit";
+        //     btnedit.setAttribute('onclick','openEditTable()')
+        //     var namevalue= document.createElement("input");
+        //     namevalue.setAttribute('readonly','readonly');
+        //     namevalue.value=nameValue;
+        //     var descriptionvalue= document.createElement("input");
+        //     descriptionvalue.setAttribute('readonly','readonly');
+        //     descriptionvalue.value=desValue;
+        //     div.appendChild(name);
+        //     div.appendChild(namevalue);
+        //     div.appendChild(description);
+        //     div.appendChild(descriptionvalue);
+        //     div.appendChild(btnedit);
+        //     fileright.appendChild(div);
+        //     fileleft.appendChild(image);
+        //     fileleft.appendChild(img);
+        //     file.appendChild(fileleft);
+        //     file.appendChild(fileright);
+        //     document.getElementsByClassName("listFile")[0].appendChild(file);
+        // }
+        document.getElementsByClassName('chooseimg')[0].onchange = function (e) {
+            console.log(e);
+            for (var i = 0; i < e.srcElement.files.length; i++) {
+                var file = e.srcElement.files[i];
+
+                var img = document.createElement("img");
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    img.src = reader.result;
+                }
+                reader.readAsDataURL(file);
+                document.getElementsByClassName('chooseimg')[0].after(img);
+            }
+        };
     </script>
 </body>
+
 </html>
