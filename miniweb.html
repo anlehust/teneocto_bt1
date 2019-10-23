@@ -197,6 +197,9 @@
             name.setAttribute('class','name1');
             var description = document.createElement("div");
             description.setAttribute('class','description1');
+            var para = document.createElement("P");
+            para.innerHTML = "This is a paragraph.";
+            name.appendChild(para);
             div.appendChild(name);
             div.appendChild(description);
             fileright.appendChild(div);
