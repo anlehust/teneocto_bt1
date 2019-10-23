@@ -102,14 +102,14 @@
     <div class="addfile-right">
         <div>
         <div class="name">
-            <input id="name">
+            <input id="name" property="name">
             <p>Name</p>
         </div>
         <div class="description">
-                <input id="description">
+                <input id="description" property="description">
                 <p>Description</p>
         </div>
-        <div><button>Add</button></div>
+        <div><button id="btn-addnew" onclick="addNew()"> Add</button></div>
         </div>
     </div>
     </div>
@@ -183,7 +183,17 @@
     x.style.display = "none";
   }
         }
-        
+        function addNew(){
+            var file= document.createElement("div");
+            file.setAttribute('class','file');
+            var fileleft = document.createElement("div");
+            fileleft.setAttribute('class','file-left');
+            var fileright = document.createElement("div");
+            fileright.setAttribute('class','file-right');
+            file.appendChild(fileleft);
+            file.appendChild(fileright);
+            document.getElementsByClassName("listFile").appendChild(file);
+        }
     </script>
 </body>
 </html>
