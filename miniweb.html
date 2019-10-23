@@ -190,6 +190,17 @@
             fileleft.setAttribute('class','file-left');
             var fileright = document.createElement("div");
             fileright.setAttribute('class','file-right');
+            var image = document.createElement("div");
+            image.setAttribute('class','image');
+            var div =document.createElement("div");
+            var name =document.createElement("div");
+            name.setAttribute('class','name1');
+            var description = document.createElement("div");
+            description.setAttribute('class','description1');
+            div.appendChild(name);
+            div.appendChild(description);
+            fileright.appendChild(div);
+            fileleft.appendChild(image);
             file.appendChild(fileleft);
             file.appendChild(fileright);
             document.getElementsByClassName("listFile").appendChild(file);
