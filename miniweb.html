@@ -128,7 +128,7 @@
     <div class="addfile">
         <div class="addfile-left">
             <div id="choosefile">
-                <input type="file" class="chooseimg">
+                <input type="file" id="chooseimg">
 
             </div>
         </div>
@@ -262,7 +262,7 @@
         //     file.appendChild(fileright);
         //     document.getElementsByClassName("listFile")[0].appendChild(file);
         // }
-        document.getElementsByClassName('chooseimg')[0].onchange = function (e) {
+        document.getElementById('chooseimg').onchange = function (e) {
             console.log(e);
             for (var i = 0; i < e.srcElement.files.length; i++) {
                 var file = e.srcElement.files[i];
@@ -273,7 +273,7 @@
                     img.src = reader.result;
                 }
                 reader.readAsDataURL(file);
-                document.getElementsByClassName('chooseimg')[0].after(img);
+                document.getElementById('chooseimg').after(img);
             }
         };
     </script>
