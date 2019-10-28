@@ -2,140 +2,140 @@
 
 <head>
     <style>
-        input {
-            padding: 3px;
-        }
-
-        .addfile {
-            position: fixed;
-            top: 0px;
-            right: 0px;
-            background-color: #026b97;
-            width: 100%;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            z-index: 3;
-        }
-        
-        .addfile-left {
-            display: flex;
-            position: absolute;
-            height: 100%;
-            width: 50%;
-            top: 0px;
-            left: 10px;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .addfile-right {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            right: 0;
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            color: white;
-        }
-
-        .name,
-        .description,
-        .name1,
-        .description1 {
-            display: flex;
-            margin: 5px;
-            margin-left: 0px !important;
-            align-items: center;
-        }
-
-        #name,
-        #description,
-        #editname,
-        #editdescription {
-            width: 300px;
-            height: 50px;
-            margin: 5px;
-            margin-left: 0px !important;
-           
-        }
-
-        .listFile {
-            position: fixed;
-            top: 300px;
-            right: 0px;
-            width: 100%;
-            height: 600px;
-            /* display: flex; */
-            align-items: center;
-            z-index: 3;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-        .file-left {
-            display: flex;
-            position: absolute;
-            height: 100%;
-            width: 50%;
-            top: 0px;
-            left: 10px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .file-right {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            right: 0;
-            width: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            color: black;
-        }
-
-        .edittable {
-            position: fixed;
-            top: 300px;
-            right: 0px;
-            background-color: brown;
-            width: 100%;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            z-index: 3;
-        }
-
-        #editTable {
-            display: none;
-        }
-
-        .file {
-            height: 300px;
-            width: 100%;
-            position: relative;
-            margin-bottom: 5px;
-            background-color: aqua;
-        }
-        img{
-            height: 115px;
-            width: 115px;
-        }
-        .name1 p,.description1 p{
-            margin-bottom:0px !important;
-            margin-top:0px !important;
-        }
-        .name1{
-            margin-top:0px;
-        }
-        input {
-            margin-right: 10px;
-        }
-    </style>
+    input {
+        padding: 3px;
+    }
+    
+    .addfile {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        background-color: #026b97;
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+    }
+    
+    .addfile-left {
+        display: flex;
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        top: 0px;
+        left: 10px;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .addfile-right {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: white;
+    }
+    
+    .name,
+    .description,
+    .name1,
+    .description1 {
+        display: flex;
+        margin: 5px;
+        margin-left: 0px !important;
+        align-items: center;
+    }
+    
+    #name,
+    #description,
+    #editname,
+    #editdescription {
+        width: 300px;
+        height: 50px;
+        margin: 5px;
+        margin-left: 0px !important;
+       
+    }
+    
+    .listFile {
+        position: fixed;
+        top: 300px;
+        right: 0px;
+        width: 100%;
+        height: 600px;
+        /* display: flex; */
+        align-items: center;
+        z-index: 3;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+    
+    .file-left {
+        display: flex;
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        top: 0px;
+        left: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .file-right {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: black;
+    }
+    
+    .edittable {
+        position: fixed;
+        top: 300px;
+        right: 0px;
+        background-color: brown;
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+    }
+    
+    #editTable {
+        display: none;
+    }
+    
+    .file {
+        height: 300px;
+        width: 100%;
+        position: relative;
+        margin-bottom: 5px;
+        background-color: aqua;
+    }
+    img{
+        height: 115px;
+        width: 115px;
+    }
+    .name1 p,.description1 p{
+        margin-bottom:0px !important;
+        margin-top:0px !important;
+    }
+    .name1{
+        margin-top:0px;
+    }
+    input {
+        margin-right: 10px;
+    }
+</style>
 </head>
 
 <body>
@@ -161,27 +161,6 @@
         </div>
     </div>
     <div class="listFile">
-        <!-- <div class="file">
-            <div class="file-left">
-                <div class="image">
-
-                </div>
-                <input type="file">
-            </div>
-            <div class="file-right">
-                <div>
-                    <div class="name1">
-                        <input id="name1" readonly value="name">
-                        <p>Name</p>
-                    </div>
-                    <div class="description1">
-                        <input id="description1" readonly='readonly' value="description">
-                        <p>Description</p>
-                    </div>
-                    <button onclick="openEditTable()">Edit</button>
-                </div>
-            </div>
-        </div> -->
     </div>
     <div id="editTable">
         <div>
@@ -205,7 +184,7 @@
                             <input id="editdescription">
                             <p>Description</p>
                         </div>
-                        <button onclick="Save()">Save</button>
+                        <button onclick="Save(event)">Save</button>
                         <button onclick="Delete()">Delete</button>
                         <button onclick="exitEdit()">Exit</button>
                     </div>
@@ -218,13 +197,19 @@
             function Save(event){
                 let namevalue= document.getElementById('editname').value;
                 let desvalue= document.getElementById('editdescription').value;
-                let name = document.getElementsByClassName('content')[Number(event.target.getAttribute('index'))-Number("1")].getElementsByTagName('input')[0];
-                let description = document.getElementsByClassName('content')[Number(event.target.getAttribute('index'))-Number("1")].getElementsByTagName('input')[1];
-                name.setAttribute('value',namevalue);
-                description.setAttribute('value',desvalue);
+                let name = document.getElementsByClassName('content')[Number(document.currentEditIndex)-Number("1")].getElementsByTagName('input')[0];
+                let description = document.getElementsByClassName('content')[Number(document.currentEditIndex)-Number("1")].getElementsByTagName('input')[1];
+                name.value = namevalue;
+                description.value = desvalue;
+                exitEdit();
+            }
+            function Delete(){
+                document.getElementsByClassName('file')[Number(document.currentEditIndex)-Number("1")].remove();
+                exitEdit();
             }
         function openEditTable(event) {
             // alert(event.target.getAttribute('index'));
+            document.currentEditIndex = event.target.getAttribute('index');
             var x = document.getElementById("editTable");
             if (x.style.display === "none") {
                 x.style.display = "block";
