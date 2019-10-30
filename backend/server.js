@@ -46,3 +46,17 @@ app.get('/todos', function(req, res) {
     res.status(404).send();
   }
 });
+var bodyParser = require('body-parser');
+
+var todoNextId = 4;
+
+app.use(bodyParser.json())
+app.post('/todos', function(req, res) {
+  var body = req.body;
+
+  body.id = todoNextId++;
+
+  todos.push(body);
+
+  res.json(body);
+});
