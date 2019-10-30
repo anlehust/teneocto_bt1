@@ -1,0 +1,134 @@
+
+     input {
+        padding: 3px;
+    }
+    
+    .addfile {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        background-color: #026b97;
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+    }
+    
+    .addfile-left {
+        display: flex;
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        top: 0px;
+        left: 10px;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .addfile-right {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: white;
+    }
+    
+    .name,
+    .description,
+    .name1,
+    .description1 {
+        display: flex;
+        margin: 5px;
+        margin-left: 0px !important;
+        align-items: center;
+    }
+    
+    #name,
+    #description,
+    #editname,
+    #editdescription {
+        width: 300px;
+        height: 50px;
+        margin: 5px;
+        margin-left: 0px !important;
+       
+    }
+    
+    .listFile {
+        position: fixed;
+        top: 300px;
+        right: 0px;
+        width: 100%;
+        height: 600px;
+        align-items: center;
+        z-index: 3;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+    
+    .file-left {
+        display: flex;
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        top: 0px;
+        left: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .file-right {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: black;
+    }
+    
+    .edittable {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        background-color: aqua;
+        width: 100%;
+        height: 1000px;
+        display: flex;
+        align-items: center;
+        z-index: 3;
+    }
+    
+    #editTable {
+        display: none;
+    }
+    
+    .file {
+        height: 300px;
+        width: 100%;
+        position: relative;
+        margin-bottom: 5px;
+        background-color: aqua;
+    }
+    img{
+        height: 115px;
+        width: 115px;
+    }
+    .name1 p,.description1 p{
+        margin-bottom:0px !important;
+        margin-top:0px !important;
+    }
+    .name1{
+        margin-top:0px;
+    }
+    input {
+        margin-right: 10px;
+    } 
+     
