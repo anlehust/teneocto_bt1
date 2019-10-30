@@ -60,3 +60,33 @@ app.post('/todos', function(req, res) {
 
   res.json(body);
 });
+var _ = require('underscore');
+
+// refactor find object in todos 
+app.get('/todos/:id', function(req, res) {
+  var todoId = parseInt(req.params.id, 10);
+ var matchedTodo = _.findWhere(todos, {id: todoId});
+ 
+});
+
+// validate and permit params when create new object
+app.post('/todos', function(req, res) {
+  var body = _.pick(req.body, 'description', 'completed');   //never trust parameters from the scary internet
+
+  if (!_.isBoolean(body.completed) || !_.isString(body.description) ||
+    body.description.trim().length == 0) {
+    return res.status(400).send();
+  }
+  
+});
+app.delete('/todos/:id', function(req, res) {
+  var todoId = parseInt(req.params.id, 10);
+  var matchedTodo = _.findWhere(todos, {id: todoId});
+
+  if(!matchedTodo) {
+    res.status(404).json({"error": "no todo found with that id"});
+  } else {
+    todos = _.without(todos, matchedTodo);
+    res.json(matchedTodo);
+  }
+});
