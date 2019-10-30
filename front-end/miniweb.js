@@ -1,67 +1,4 @@
-<html>
-
-<head>
-  
-<link rel="stylesheet" type="text/css" href="miniweb.css">
-</head>
-
-<body>
-    <div class="addfile">
-        <div class="addfile-left">
-            <div id="choosefile">
-                <input type="file" id="chooseimg">
-
-            </div>
-        </div>
-        <div class="addfile-right">
-            <div>
-                <div class="name">
-                    <input id="name" property="name">
-                    <p>Name</p>
-                </div>
-                <div class="description">
-                    <input id="description" property="description">
-                    <p>Description</p>
-                </div>
-                <div><button id="btn-addnew" onclick="addNew()"> Add</button></div>
-            </div>
-        </div>
-    </div>
-    <div class="listFile">
-    </div>
-    
-    <div id="editTable">
-        <div>
-            <h1>EDIT</h1>
-        </div>
-        <div class="edittable">
-
-            <div class="file">
-                <div class="file-left" id="edittableleft">
-                    <div class="image">
-                    </div>
-                    <img>
-                </div>
-                <div class="file-right">
-                    <div>
-                        <div class="name1">
-                            <input id="editname" >
-                            <p>Name</p>
-                        </div>
-                        <div class="description1">
-                            <input id="editdescription">
-                            <p>Description</p>
-                        </div>
-                        <button onclick="Save(event)">Save</button>
-                        <button onclick="Delete()">Delete</button>
-                        <button onclick="exitEdit()">Exit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- <script type="text/javascript">
-        window.userCount = 1;
+window.userCount = 1;
             function Save(event){
                 let namevalue= document.getElementById('editname').value;
                 let desvalue= document.getElementById('editdescription').value;
@@ -175,8 +112,3 @@
             }
         };
         
-    </script> -->
-    <script language="javascript" src="miniweb.js"></script>
-</body>
-
-</html>
