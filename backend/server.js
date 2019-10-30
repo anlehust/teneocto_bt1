@@ -29,16 +29,17 @@ var todos =[{
 app.get('/todos', function(req, res) {
   res.json(todos);
  });
+ var _ = require('underscore');
  app.get('/todos/:id', function(req, res) {
   // params được gửi thuộc kiểu string do đó phải convert params về kiểu integer 
   var todoId = parseInt(req.params.id, 10);
-  var matchedTodo;
-  // duyệt từng phần tử trong todos
-  todos.forEach(function (todo) {
-    if (todoId == todo.id) {
-      matchedTodo = todo;
-    }
-  });
+  var matchedTodo = _.findWhere(todos, {id: todoId});
+  // // duyệt từng phần tử trong todos
+  // todos.forEach(function (todo) {
+  //   if (todoId == todo.id) {
+  //     matchedTodo = todo;
+  //   }
+  // });
   // nếu tồn tại kết quả thì trả về dưới dạng json nếu không trả về status 404
   if (matchedTodo) {
     res.json(matchedTodo);
@@ -52,33 +53,18 @@ var todoNextId = 4;
 
 app.use(bodyParser.json())
 app.post('/todos', function(req, res) {
-  var body = req.body;
-
+  var body = _.pick(req.body, 'description', 'completed');   //never trust parameters from the scary internet
+  if (!_.isBoolean(body.completed) || !_.isString(body.description) ||
+  body.description.trim().length == 0) {
+  return res.status(400).send();
+}
   body.id = todoNextId++;
 
   todos.push(body);
 
   res.json(body);
 });
-var _ = require('underscore');
 
-// refactor find object in todos 
-app.get('/todos/:id', function(req, res) {
-  var todoId = parseInt(req.params.id, 10);
- var matchedTodo = _.findWhere(todos, {id: todoId});
- 
-});
-
-// validate and permit params when create new object
-app.post('/todos', function(req, res) {
-  var body = _.pick(req.body, 'description', 'completed');   //never trust parameters from the scary internet
-
-  if (!_.isBoolean(body.completed) || !_.isString(body.description) ||
-    body.description.trim().length == 0) {
-    return res.status(400).send();
-  }
-  
-});
 app.delete('/todos/:id', function(req, res) {
   var todoId = parseInt(req.params.id, 10);
   var matchedTodo = _.findWhere(todos, {id: todoId});
