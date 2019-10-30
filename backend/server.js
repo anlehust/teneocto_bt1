@@ -29,8 +29,11 @@ var todos =[{
 app.get('/todos', function(req, res) {
   var queryParams = req.query;
   var filteredTodos = todos;
-
-  if (queryParams.hasOwnProperty('completed') && queryParams.completed == 'true') {
+  if (queryParams.hasOwnProperty('search') && queryParams.search.length > 0) {
+    filteredTodos = _.filter(filteredTodos, function(item) {
+      return item.description.indexOf(queryParams.search) > -1
+    });
+  } else if (queryParams.hasOwnProperty('completed') && queryParams.completed == 'true') {
     filteredTodos = _.where(filteredTodos, {
       completed: true
     });
