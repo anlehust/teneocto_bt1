@@ -111,4 +111,12 @@ window.userCount = 1;
                 document.getElementById('chooseimg').after(img);
             }
         };
-        
+function addPerson() {
+    $.ajax({
+        type: "POST",
+        url: 'localhost:8080/todo',
+        data: data,
+        success: success,
+        dataType: dataType
+      });
+}

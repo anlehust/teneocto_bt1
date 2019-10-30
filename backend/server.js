@@ -25,6 +25,7 @@ var todos =[{
   description: 'Feed the dog ',
   completed: true
  }];
+ 
 // GET /todos
 app.get('/todos', function(req, res) {
   var queryParams = req.query;
@@ -86,7 +87,7 @@ app.delete('/todos/:id', function(req, res) {
   }
 });
 // PUT /todos/:id
-app.put('/todos/:id', function(req, res) {
+app.put('/addperson/:id', function(req, res) {
   var body = _.pick(req.body, 'description', 'completed');
   var validAttributes = {}
 
