@@ -87,7 +87,7 @@ app.delete('/todos/:id', function(req, res) {
   }
 });
 // PUT /todos/:id
-app.put('/addperson/:id', function(req, res) {
+app.put('/todos/:id', function(req, res) {
   var body = _.pick(req.body, 'description', 'completed');
   var validAttributes = {}
 
