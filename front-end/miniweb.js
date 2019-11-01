@@ -1,3 +1,6 @@
+$(document).ready(function () {
+  
+});
 window.userCount = 1;
             function Save(event){
                 let namevalue= document.getElementById('editname').value;
@@ -47,9 +50,15 @@ window.userCount = 1;
             document.getElementsByTagName('img')[0].remove();
         }
         function addNew() {
+            
             let nameValue=document.getElementById("name").value ;
             let desValue=document.getElementById("description").value ;
             let imgsrc= document.getElementById("choosefile").getElementsByTagName('img')[0].getAttribute('src');
+            debugger
+            let object={};
+            object.id=Number(4);
+            object.description=desValue;
+            object.completed=false;
             debugger
             let img= document.createElement('img');
             img.setAttribute('src',imgsrc);
@@ -96,7 +105,19 @@ window.userCount = 1;
             file.appendChild(fileleft);
             file.appendChild(fileright);
             document.getElementsByClassName("listFile")[0].appendChild(file);
+            $.ajax({
+                method:'POST',
+                data: JSON.stringify(object),
+                contentType: "application/json; charset=utf-8",
+                url: "http://localhost:3000/todos",
+                crossDomain: true, 
+                success: function(result){
+                console.log(result);
+            }});
+            
+
         }
+        
         document.getElementById('chooseimg').onchange = function (e) {
             removeimg();
             for (var i = 0; i < e.srcElement.files.length; i++) {
@@ -110,20 +131,8 @@ window.userCount = 1;
                 reader.readAsDataURL(file);
                 document.getElementById('chooseimg').after(img);
             }
+            
         };
-function addPerson() {
-    $.ajax({
-        type: "POST",
-        url: 'localhost:8080/todo',
-        data: data,
-        success: success,
-        dataType: dataType
-      });
-}
-$(document).ready(function(){
-    $("button").click(function(){
-      $.get("demo_test.asp", function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-      });
-    });
-  });
+    
+       
+        

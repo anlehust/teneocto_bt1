@@ -1,6 +1,10 @@
 // import thư viện express
 var express = require('express');
 var app = express();
+var cors = require('cors');
+
+var fs = require('fs');
+app.use(cors());
 // khai báo cổng chạy dịch vụ
 var PORT = process.env.PORT || 3000;
 
@@ -63,16 +67,19 @@ var todoNextId = 4;
 
 app.use(bodyParser.json())
 app.post('/todos', function(req, res) {
-  var body = _.pick(req.body, 'description', 'completed');   //never trust parameters from the scary internet
-  if (!_.isBoolean(body.completed) || !_.isString(body.description) ||
-  body.description.trim().length == 0) {
-  return res.status(400).send();
-}
-  body.id = todoNextId++;
-
+  var body = req.body;//_.pick('id', 'description', 'completed');   //never trust parameters from the scary internet
+  console.log(body);
+  if (body === null) {
+    return;
+  }
+  
+  fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  });
   todos.push(body);
+  res.json('Added user');
 
-  res.json(body);
 });
 
 app.delete('/todos/:id', function(req, res) {
