@@ -3,12 +3,26 @@ $(document).ready(function () {
 });
 window.userCount = 1;
             function Save(event){
+                let object={};
+           
                 let namevalue= document.getElementById('editname').value;
                 let desvalue= document.getElementById('editdescription').value;
-                let name = document.getElementsByClassName('content')[Number(document.currentEditIndex)-Number("1")].getElementsByTagName('input')[0];
-                let description = document.getElementsByClassName('content')[Number(document.currentEditIndex)-Number("1")].getElementsByTagName('input')[1];
+                let indexedit = Number(document.currentEditIndex)-Number("1");
+                let name = document.getElementsByClassName('content')[indexedit].getElementsByTagName('input')[0];
+                let description = document.getElementsByClassName('content')[indexedit].getElementsByTagName('input')[1];
                 name.value = namevalue;
                 description.value = desvalue;
+                object.name = namevalue;
+                object.description=desvalue;
+                $.ajax({
+                    method:'PUT',
+                    data: JSON.stringify(object),
+                    contentType: "application/json; charset=utf-8",
+                    url: "http://localhost:3000/todos"+indexedit,
+                    crossDomain: true, 
+                    success: function(result){
+                    console.log(result);
+                }});
                 exitEdit();
             }
             function Delete(){
@@ -56,9 +70,11 @@ window.userCount = 1;
             let imgsrc= document.getElementById("choosefile").getElementsByTagName('img')[0].getAttribute('src');
             debugger
             let object={};
-            object.id=Number(4);
+            object.id=Number(window.userCount);
             object.description=desValue;
+            object.name=nameValue;
             object.completed=false;
+            
             debugger
             let img= document.createElement('img');
             img.setAttribute('src',imgsrc);

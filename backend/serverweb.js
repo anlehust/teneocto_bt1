@@ -16,19 +16,24 @@ var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
   console.log('Express listening on port' + PORT + '!');
 });
-var todos =[{
-  id: 1,
-  description: 'Build a simple API - nodejs',
-  completed: false
- }, {
-  id: 2,
-  description: 'Go to T-beer - team building',
-  completed: false
- }, {
-  id: 3,
-  description: 'Feed the dog ',
-  completed: true
- }];
+var todos =[
+//   {
+//   id: 1,
+//   description: 'Build a simple API - nodejs',
+//   completed: false,
+//   name:'AN'
+//  }, {
+//   id: 2,
+//   description: 'Go to T-beer - team building',
+//   completed: false,
+//   name:'AN'
+//  }, {
+//   id: 3,
+//   description: 'Feed the dog ',
+//   completed: true,
+//   name:'AN'
+//  }
+];
  
 // GET /todos
 app.get('/todos', function(req, res) {
@@ -67,16 +72,25 @@ var todoNextId = 4;
 
 app.use(bodyParser.json())
 app.post('/todos', function(req, res) {
-  var body = req.body;//_.pick('id', 'description', 'completed');   //never trust parameters from the scary internet
+  var body = req.body; //never trust parameters from the scary internet
   console.log(body);
   if (body === null) {
     return;
   }
+  fs.access('mynewfile3.json', fs.F_OK, (err) => {
+    if (err) {
+      fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+    }
   
-  fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
-    if (err) throw err;
-    console.log('Saved!');
-  });
+    fs.appendFile('mynewfile3.json', JSON.stringify(body), function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  })
+  
   todos.push(body);
   res.json('Added user');
 
@@ -95,7 +109,7 @@ app.delete('/todos/:id', function(req, res) {
 });
 // PUT /todos/:id
 app.put('/todos/:id', function(req, res) {
-  var body = _.pick(req.body, 'description', 'completed');
+  var body = _.pick(req.body, 'description','completed','name');
   var validAttributes = {}
 
   var todoId = parseInt(req.params.id, 10);
@@ -115,6 +129,12 @@ app.put('/todos/:id', function(req, res) {
     body.description.trim().length > 0) {
     validAttributes.description = body.description;
   } else if (body.hasOwnProperty('description')) {
+    return res.status(404).json();
+  }
+  if (body.hasOwnProperty('name') && _.isString(body.name) &&
+    body.name.trim().length > 0) {
+    validAttributes.name = body.name;
+  } else if (body.hasOwnProperty('name')) {
     return res.status(404).json();
   }
 
