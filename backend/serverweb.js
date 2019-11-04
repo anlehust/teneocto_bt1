@@ -2,9 +2,12 @@
 var express = require('express');
 var app = express();
 var cors = require('cors');
-
+var bodyParser = require('body-parser');
+var _ = require('underscore');
 var fs = require('fs');
+var todoNextId = 4;
 app.use(cors());
+app.use(bodyParser({limit: '50mb'}));
 // khai báo cổng chạy dịch vụ
 var PORT = process.env.PORT || 3000;
 
@@ -54,7 +57,7 @@ app.get('/todos', function(req, res) {
   }
   res.json(filteredTodos);
  });
- var _ = require('underscore');
+ 
  app.get('/todos/:id', function(req, res) {
   // params được gửi thuộc kiểu string do đó phải convert params về kiểu integer 
   var todoId = parseInt(req.params.id, 10);
@@ -66,11 +69,9 @@ app.get('/todos', function(req, res) {
     res.status(404).send();
   }
 });
-var bodyParser = require('body-parser');
 
-var todoNextId = 4;
 
-app.use(bodyParser.json())
+
 app.post('/todos', function(req, res) {
   var body = req.body; //never trust parameters from the scary internet
   console.log(body);
