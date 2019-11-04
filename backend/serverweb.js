@@ -74,7 +74,6 @@ app.get('/todos', function(req, res) {
 
 app.post('/todos', function(req, res) {
   var body = req.body; //never trust parameters from the scary internet
-  console.log(body);
   if (body === null) {
     return;
   }

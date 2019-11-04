@@ -1,3 +1,5 @@
+
+var numofFile;
 $(document).ready(function () {
   // show progress bar
 
@@ -10,7 +12,10 @@ $(document).ready(function () {
         $('#loading').show();
     },
     success: function (res) {
+        $('#loading').hide();
         window.userCount = Number(1)+res.length;
+        numofFile = res.length;
+        
         res.forEach(element =>{
             let nameValue=element.name ;
             let desValue=element.description ;
@@ -62,7 +67,6 @@ $(document).ready(function () {
         
     },
     error: function (res) {
-        console.log(res)
     }
 });
   // show data, and dissmiss progress bar
@@ -88,35 +92,66 @@ $(document).ready(function () {
                     url: "http://localhost:3000/todos/"+Number(document.currentEditIndex),
                     crossDomain: true, 
                     success: function(result){
-                    console.log(result);
                 }});
                 exitEdit();
             }
             function Delete(){
-                // document.getElementsByClassName('file')[Number(document.currentEditIndex)-Number("1")].remove();
+                let object={};
+                console.log(numofFile);
+                for ( let i = Number(document.currentEditIndex) + Number(1);i<=numofFile;i++)
+                {
+                    object.id= i-1;
+                    $.ajax({
+                        method:'PUT',
+                        data: JSON.stringify(object),
+                        contentType: "application/json; charset=utf-8",
+                        url: "http://localhost:3000/todos/"+i,
+                        crossDomain: true, 
+                    async:false,
+                        success: function(result){
+                    }});
+                }
+                numofFile--;
                 $.ajax({
                     method: 'DELETE',
                     url: 'http://localhost:3000/todos/'+Number(document.currentEditIndex),
+                    async:false,
                     success: function (res) {
-                        console.log(res)
                         document.getElementsByClassName('file')[Number(document.currentEditIndex)-Number("1")].remove();
                         window.userCount--;
                         exitEdit();
-                    }
-                });
+                    } });
+                    
                 
-                exitEdit();
-            }
+           }
         function openEditTable(event) {
             // alert(event.target.getAttribute('index'));
             document.currentEditIndex = event.target.getAttribute('index');
+            console.log(document.currentEditIndex);
             var x = document.getElementById("editTable");
             if (x.style.display === "none") {
                 x.style.display = "block";
             } else {
                 x.style.display = "none";
             }
-            let imgsrc= document.getElementsByTagName('img')[event.target.getAttribute('index')].getAttribute('src');
+
+            var listFileElements = document.getElementsByClassName('file');
+            let fileByIndex;
+            for (let i = 0; i < listFileElements.length ; i ++) {
+                let file = listFileElements[i];
+                if (file.getElementsByClassName('file-left')[0].getAttribute('id') === 'edittableleft') {
+                    break;
+                }
+                let btnIndex = file.getElementsByTagName('button')[0].getAttribute('index');
+                if (btnIndex === document.currentEditIndex) {
+                    fileByIndex = file;
+                    break;
+                }
+            }
+            console.log(fileByIndex);
+
+           
+            let imgsrc= fileByIndex.getElementsByTagName('img')[0].getAttribute('src');
             let img= document.createElement('img');
             img.setAttribute('src',imgsrc);
             img.setAttribute('class','imgedit');
@@ -124,14 +159,13 @@ $(document).ready(function () {
                 document.getElementsByClassName('imgedit')[0].remove();
             }
             document.getElementById('edittableleft').appendChild(img);
-            let name = document.getElementsByClassName('content')[Number(event.target.getAttribute('index'))-Number("1")].getElementsByTagName('input')[0].value;
+            let name = fileByIndex.getElementsByTagName('input')[0].value;
             let namevalue= document.getElementById('editname');
             namevalue.setAttribute('value',name);
-            let description = document.getElementsByClassName('content')[Number(event.target.getAttribute('index'))-Number("1")].getElementsByTagName('input')[1].value;
+            let description = fileByIndex.getElementsByTagName('input')[1].value;
             let desvalue= document.getElementById('editdescription');
             desvalue.setAttribute('value',description);
         }
-
         function exitEdit() {
             var x = document.getElementById("editTable");
             if (x.style.display === "block") {
@@ -139,8 +173,9 @@ $(document).ready(function () {
             }
         }
         function removeimg(){
-            document.getElementsByTagName('img')[0].remove();
+                document.getElementsByTagName('img')[0].remove();
         }
+        var count_choose_img = 0;
         function addNew() {
             
             let nameValue=document.getElementById("name").value ;
@@ -204,14 +239,16 @@ $(document).ready(function () {
                 url: "http://localhost:3000/todos",
                 crossDomain: true, 
                 success: function(result){
-                console.log(result);
             }});
             
 
         }
         
         document.getElementById('chooseimg').onchange = function (e) {
-            removeimg();
+              if (count_choose_img!=0)
+                 removeimg();
+                 count_choose_img++;
+            
             for (var i = 0; i < e.srcElement.files.length; i++) {
                 var file = e.srcElement.files[i];
 
@@ -222,9 +259,6 @@ $(document).ready(function () {
                 }
                 reader.readAsDataURL(file);
                 document.getElementById('chooseimg').after(img);
-            }
+            }};
             
-        };
-    
-       
-        
+            
