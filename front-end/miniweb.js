@@ -77,7 +77,7 @@ $(document).ready(function () {
            
                 let namevalue= document.getElementById('editname').value;
                 let desvalue= document.getElementById('editdescription').value;
-                let indexedit = Number(document.currentEditIndex)-Number("1");
+                let indexedit = btnIndex;
                 let name = document.getElementsByClassName('content')[indexedit].getElementsByTagName('input')[0];
                 let description = document.getElementsByClassName('content')[indexedit].getElementsByTagName('input')[1];
                 name.value = namevalue;
@@ -142,7 +142,7 @@ $(document).ready(function () {
                 if (file.getElementsByClassName('file-left')[0].getAttribute('id') === 'edittableleft') {
                     break;
                 }
-                let btnIndex = file.getElementsByTagName('button')[0].getAttribute('index');
+                var btnIndex = file.getElementsByTagName('button')[0].getAttribute('index');
                 if (btnIndex === document.currentEditIndex) {
                     fileByIndex = file;
                     break;
