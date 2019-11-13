@@ -1,46 +1,56 @@
-var admin = require("firebase-admin");
+// const admin = require('firebase-admin');
 
-var serviceAccount = require("path/to/serviceAccountKey.json");
+// function initFireStore() {
+//     var serviceAccount = require('C:/Users/teneocto/Downloads/bt1-firebase-adminsdk.json');
+//     admin.initializeApp({
+//         credential: admin.credential.cert(serviceAccount),
+//         databaseURL: 'https://bt1-firebase.firebaseio.com'
+//     });
+// }
+// initFireStore();
+// var db = admin.database();
+// var ref = db.ref("server/saving-data/fireblog");
+// var usersRef = ref.child("users");
+// usersRef.set({
+//   alanisawesome: {
+//     date_of_birth: "June 23, 1912",
+//     full_name: "Alan Turing"
+//   },
+//   gracehop: {
+//     date_of_birth: "December 9, 1906",
+//     full_name: "Grace Hopper"
+//   }
+// });
+const admin = require('firebase-admin');
+
+let serviceAccount = require('C:/Users/teneocto/Downloads/bt1-firebase-adminsdk.json');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://bt1-firebase.firebaseio.com"
+  credential: admin.credential.cert(serviceAccount)
 });
 
-function initializeAppFunctions() {
-    process.env.GCLOUD_PROJECT = 'firestorebeta1test2';
-    // [START initialize_app_functions]
-    const functions = require('firebase-functions');
-  
-    admin.initializeApp(functions.config().firebase);
-  
-    let db = admin.firestore();
-  
-    // [END initialize_app_functions]
-    return db;
+let db = admin.firestore();
+let docRef = db.collection('users').doc('alovelace');
+
+let setAda = docRef.set({
+  alanisawesome: {
+    date_of_birth: "June 23, 1912",
+    full_name: "Alan Turing"
+  },
+  gracehop: {
+    date_of_birth: "December 9, 1906",
+    full_name: "Grace Hopper"
   }
-  function demoInitialize(db) {
-    // [START demo_initialize]
-    // Fetch data from Firestore
-    db.collection('cities').get()
-      .then(documentSet => {
-        // Print the ID and contents of each document
-        documentSet.forEach(doc => {
-          console.log(doc.id, ' => ', doc.data());
-        });
-      })
-      .catch(err => {
-        // Error fetching documents
-        console.log('Error', err);
-      });
-    // [END demo_initialize]
+});
+
+let getDoc = docRef.get()
+.then(doc => {
+  if (!doc.exists) {
+    console.log('No such document!');
+  } else {
+    console.log('Document data:', doc.data());
   }
-  function quickstartAddData(db) {
-    // [START add_lovelace]
-    let docRef = db.collection('users').doc('alovelace');
-  
-    let setAda = docRef.set({
-      first: 'Ada',
-      last: 'Lovelace',
-      born: 1815
-    });}
+})
+.catch(err => {
+  console.log('Error getting document', err);
+});
