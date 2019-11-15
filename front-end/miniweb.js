@@ -20,7 +20,7 @@ function loadData() {
         },
         success: function (res) {
             $('#loading').hide();
-
+            console.log(res);
             numofFile = res.length;
             window.userCount = 1;
             res.forEach(element => {
@@ -83,12 +83,15 @@ function Save(event) {
 
     let namevalue = document.getElementById('editname').value;
     let desvalue = document.getElementById('editdescription').value;
+    let img= document.getElementsByClassName('imgedit')[0].value;
     let name = fileByIndex.getElementsByTagName('input')[0];
     let description = fileByIndex.getElementsByTagName('input')[1];
     name.value = namevalue;
     description.value = desvalue;
     object.name = namevalue;
     object.description = desvalue;
+    object.imgsrc=img;
+    object.id=document.currentEditIndex;
     debugger
     $.ajax({
         method: 'PUT',

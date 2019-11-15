@@ -21,15 +21,16 @@ admin.initializeApp({
 
 let db = admin.firestore();
 
-
 function pushUserToFirebase(data) {
-  let docRef = db.collection('user_list'); //.doc('users');
+   //.doc('users');
   // let docRef = db.doc('users');
-  let id = 1;
+  let docRef = db.collection('user_list');
+  // console.log(data);
+  console.log('Push Done');
   docRef.doc(data.id.toString()).set(data);
 };
 
-docRef.doc(id.toString()).get()
+// docRef.doc(id.toString()).get()
 
 // let setAda = docRef.set({
 //   id: 1,
@@ -40,18 +41,29 @@ docRef.doc(id.toString()).get()
 
 var todos =[
 ];
+async function getMarker() {
+  const snapshot = await db.collection('user_list').get()
+  
+  snapshot.forEach(doc => {
+      Object.assign(todos[0],doc.data());
+  });
+}
+function getDataFromFirebase(){
+  let docRef=db.collection('user_list').doc('1');
 let getDoc = docRef.get()
 .then(doc => {
   if (!doc.exists) {
     console.log('No such document!');
   } else {
-    console.log('Document data:', doc.data());
     todos[0]=doc.data();
+    console.log('Get Done');
   }
 })
 .catch(err => {
   console.log('Error getting document', err);
 });
+}
+getDataFromFirebase();
 
 // "To do API Root" sẽ được trả về khi thực hiện get request trên trang home page của ứng dụng  
  app.get('/', function(req, res) {
@@ -63,9 +75,14 @@ app.listen(PORT, function() {
 });
 
  app.get('/todos',function(req,res){
-  
+  getMarker();
+  // after get img path
+  // read base64 from img path
+  // return data/
   res.json(todos);
+  console.log(todos);
  })
+
  app.get('/todos/:id',function(req,res){
    var todoID= parseInt(req.params.id,10);
    var matchedTodo=_.findWhere(todos,{id:todoID});
@@ -80,11 +97,87 @@ app.listen(PORT, function() {
   if (body === null) {
     return;
   }
-  let setDoc = docRef.set(JSON.stringify(body));
+  // get image base64 from body. 
+  // save image base64 to file.
+  // push img path to firebase
+
+  pushUserToFirebase(body);
+  // fs.access('mynewfile3.json', fs.F_OK, (err) => {
+  //   if (err) {
+  //     fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
+  //       if (err) throw err;
+  //       console.log('Saved!');
+  //     });
+  //   }
   
-  todos.push(body);
-  res.json('Added user');
+  //   fs.appendFile('mynewfile3.json', JSON.stringify(body), function (err) {
+  //     if (err) throw err;
+  //     console.log('Saved!');
+  //   });
+  // })
+  
+  // todos.push(body);
+  // res.json('Added user');
+
 });
+//PUT /todos/:id
+app.put('/todos/:id', function(req, res) {
+  var body = _.pick(req.body, 'description','completed','name');
+  var validAttributes = {}
+
+  var todoId = parseInt(req.params.id, 10);
+  var matchedTodo = _.findWhere(todos, {id: todoId});
+
+  if (!matchedTodo) {
+    return res.status(404).json();
+  }
+
+  if (body.hasOwnProperty('completed') && _.isBoolean(body.completed)) {
+    validAttributes.completed = body.completed;
+  } else if (body.hasOwnProperty('completed')){
+    return res.status(404).json();
+  }
+
+  if (body.hasOwnProperty('description') && _.isString(body.description) &&
+    body.description.trim().length > 0) {
+    validAttributes.description = body.description;
+  } else if (body.hasOwnProperty('description')) {
+    return res.status(404).json();
+  }
+  if (body.hasOwnProperty('name') && _.isString(body.name) &&
+    body.name.trim().length > 0) {
+    validAttributes.name = body.name;
+  } else if (body.hasOwnProperty('name')) {
+    return res.status(404).json();
+  }
+
+  _.extend(matchedTodo, validAttributes);
+  res.json(matchedTodo);
+  let delRef=db.collection('user_list').doc(todoId.toString()).set(matchedTodo);
+});
+app.delete('/todos/:id', function(req, res) {
+  var todoId = parseInt(req.params.id, 10);
+  var matchedTodo = _.findWhere(todos, {id: todoId});
+
+  if(!matchedTodo) {
+    res.status(404).json({"error": "no todo found with that id"});
+  } else {
+    todos = _.without(todos, matchedTodo);
+    res.json(matchedTodo);
+  }
+  let delRef=db.collection('user_list').doc(todoId.toString()).delete();
+  console.log('Delete Done');
+});
+//  app.post('/todos', function(req, res) {
+//   var body = req.body; //never trust parameters from the scary internet
+//   if (body === null) {
+//     return;
+//   }
+//   let setDoc = docRef.set(JSON.stringify(body));
+  
+//   todos.push(body);
+//   res.json('Added user');
+// });
 // });
 // GET /todos
 // app.get('/todos', function(req, res) {
@@ -119,43 +212,6 @@ app.listen(PORT, function() {
 // });
 
 
-
-app.post('/todos', function(req, res) {
-  var body = req.body; //never trust parameters from the scary internet
-  if (body === null) {
-    return;
-  }
-  pushUserToFirebase(body);
-  // fs.access('mynewfile3.json', fs.F_OK, (err) => {
-  //   if (err) {
-  //     fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
-  //       if (err) throw err;
-  //       console.log('Saved!');
-  //     });
-  //   }
-  
-  //   fs.appendFile('mynewfile3.json', JSON.stringify(body), function (err) {
-  //     if (err) throw err;
-  //     console.log('Saved!');
-  //   });
-  // })
-  
-  // todos.push(body);
-  // res.json('Added user');
-
-});
-
-// app.delete('/todos/:id', function(req, res) {
-//   var todoId = parseInt(req.params.id, 10);
-//   var matchedTodo = _.findWhere(todos, {id: todoId});
-
-//   if(!matchedTodo) {
-//     res.status(404).json({"error": "no todo found with that id"});
-//   } else {
-//     todos = _.without(todos, matchedTodo);
-//     res.json(matchedTodo);
-//   }
-// });
 // // PUT /todos/:id
 // app.put('/todos/:id', function(req, res) {
 //   var body = _.pick(req.body, 'description','completed','name');
