@@ -20,7 +20,7 @@ function loadData() {
         },
         success: function (res) {
             $('#loading').hide();
-            console.log(res);
+            // console.log(res);
             numofFile = res.length;
             window.userCount = 1;
             res.forEach(element => {
@@ -99,7 +99,9 @@ function Save(event) {
         contentType: "application/json; charset=utf-8",
         url: "http://localhost:3000/todos/" + Number(document.currentEditIndex),
         crossDomain: true,
-        success: function (result) {}
+        success: function (result) {
+            exitEdit();
+        }
     });
 }
 
@@ -141,7 +143,7 @@ function openEditTable(event) {
             break;
         }
     }
-    console.log(fileByIndex);
+    // console.log(fileByIndex);
 
 
     let imgsrc = fileByIndex.getElementsByTagName('img')[0].getAttribute('src');

@@ -5,6 +5,7 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 var fs = require('fs');
+var { Node, BinarySearchTree } = require ('H:/workplace/bt1/backend/BST.js');
 var todoNextId = 4;
 app.use(cors());
 app.use(bodyParser({limit: '50mb'}));
@@ -38,32 +39,43 @@ function pushUserToFirebase(data) {
 //   completed: false,
 //   name:'AN'
 // });
+//
+var Node = new Node();
+var BST = new BinarySearchTree();
+
+
+
 
 var todos =[
 ];
 async function getMarker() {
   const snapshot = await db.collection('user_list').get()
-  
+  var i=0;
   snapshot.forEach(doc => {
-      Object.assign(todos[0],doc.data());
+    // chèn doc.data() vào todos
+    todos[i]=doc.data();
+    i++;
   });
+
+
+
 }
-function getDataFromFirebase(){
-  let docRef=db.collection('user_list').doc('1');
-let getDoc = docRef.get()
-.then(doc => {
-  if (!doc.exists) {
-    console.log('No such document!');
-  } else {
-    todos[0]=doc.data();
-    console.log('Get Done');
-  }
-})
-.catch(err => {
-  console.log('Error getting document', err);
-});
-}
-getDataFromFirebase();
+//    function getDataFromFirebase(){
+//   let docRef=db.collection('user_list').doc('1');
+// let getDoc = docRef.get()
+// .then(doc => {
+//   if (!doc.exists) {
+//     console.log('No such document!');
+//   } else {
+//     todos[0]=doc.data();
+//     console.log('Get Done');
+//   }
+// })
+// .catch(err => {
+//   console.log('Error getting document', err);
+// });
+//  }
+// getDataFromFirebase();
 
 // "To do API Root" sẽ được trả về khi thực hiện get request trên trang home page của ứng dụng  
  app.get('/', function(req, res) {
@@ -79,9 +91,18 @@ app.listen(PORT, function() {
   // after get img path
   // read base64 from img path
   // return data/
-  res.json(todos);
-  console.log(todos);
- })
+  res.send(todos);
+  fs.access('mynewfile3.json', fs.F_OK, (err) => {
+    if (!err) {
+    fs.readFile('mynewfile3.json', (err, data) => {
+      if (err) throw err;
+      //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
+      let jsonObject = JSON.parse(data);
+      console.log (jsonObject);
+  })
+}})
+
+ });
 
  app.get('/todos/:id',function(req,res){
    var todoID= parseInt(req.params.id,10);
@@ -98,9 +119,17 @@ app.listen(PORT, function() {
     return;
   }
   // get image base64 from body. 
+  //  fs.access('mynewfile3.json', fs.F_OK, (err) => {
+  //    if (err) {
+  //      fs.appendFile('H:/workplace/bt1/backend/image/mynewfile3.json', ('{\"id\":'+body.id +',\"imgsrc\":'+ JSON.stringify(body.imgsrc)+'}'), function (err) {
+  //        if (err) throw err;
+
+  //        console.log('Saved!');
+  //      });
+  //    }})
   // save image base64 to file.
   // push img path to firebase
-
+  
   pushUserToFirebase(body);
   // fs.access('mynewfile3.json', fs.F_OK, (err) => {
   //   if (err) {
