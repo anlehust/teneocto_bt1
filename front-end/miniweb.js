@@ -83,15 +83,16 @@ function Save(event) {
 
     let namevalue = document.getElementById('editname').value;
     let desvalue = document.getElementById('editdescription').value;
-    let img= document.getElementsByClassName('imgedit')[0].value;
+    //let img= document.getElementsByClassName('imgedit')[0].value;
     let name = fileByIndex.getElementsByTagName('input')[0];
     let description = fileByIndex.getElementsByTagName('input')[1];
     name.value = namevalue;
     description.value = desvalue;
     object.name = namevalue;
     object.description = desvalue;
-    object.imgsrc=img;
+    
     object.id=document.currentEditIndex;
+    object.imgsrc='H:\\workplace\\bt1\\backend\\image\\img'+object.id+'.json';
     debugger
     $.ajax({
         method: 'PUT',

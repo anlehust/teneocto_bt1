@@ -88,20 +88,30 @@ app.listen(PORT, function() {
 
  app.get('/todos',function(req,res){
   getMarker();
+  todos.forEach(element => {
+    fs.readFile(element.imgsrc, (err, data) => {
+      
+            if (err) throw err;
+            //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
+          let string = toString(data);
+            element.imgsrc= string ;
+        })
+  });
   // after get img path
   // read base64 from img path
   // return data/
-  res.send(todos);
-  fs.access('mynewfile3.json', fs.F_OK, (err) => {
-    if (!err) {
-    fs.readFile('mynewfile3.json', (err, data) => {
-      if (err) throw err;
-      //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
-      let jsonObject = JSON.parse(data);
-      console.log (jsonObject);
-  })
-}})
+  
+//   fs.access('mynewfile3.json', fs.F_OK, (err) => {
+//     if (!err) {
+//     fs.readFile('mynewfile3.json', (err, data) => {
+//       if (err) throw err;
+//       //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
+//       let jsonObject = JSON.parse(data);
+//       console.log (jsonObject);
+//   })
+// }})
 
+res.send(todos);
  });
 
  app.get('/todos/:id',function(req,res){
@@ -119,17 +129,18 @@ app.listen(PORT, function() {
     return;
   }
   // get image base64 from body. 
-  //  fs.access('mynewfile3.json', fs.F_OK, (err) => {
-  //    if (err) {
-  //      fs.appendFile('H:/workplace/bt1/backend/image/mynewfile3.json', ('{\"id\":'+body.id +',\"imgsrc\":'+ JSON.stringify(body.imgsrc)+'}'), function (err) {
-  //        if (err) throw err;
-
-  //        console.log('Saved!');
-  //      });
-  //    }})
+   
+     
+  
+      
+        fs.appendFile('H:\\workplace\\bt1\\backend\\image\\img'+body.id+'.json', JSON.stringify(body.imgsrc), function (err) {
+          if (err) throw err;
+          console.log('Saved!');})
+       
+    
   // save image base64 to file.
   // push img path to firebase
-  
+  body.imgsrc='H:\\workplace\\bt1\\backend\\image\\img'+body.id+'.txt';
   pushUserToFirebase(body);
   // fs.access('mynewfile3.json', fs.F_OK, (err) => {
   //   if (err) {
