@@ -90,7 +90,6 @@ app.listen(PORT, function() {
   getMarker();
   todos.forEach(element => {
     fs.readFile(element.imgsrc, (err, data) => {
-      
             if (err) throw err;
             //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
           let string = toString(data);
@@ -129,18 +128,14 @@ res.send(todos);
     return;
   }
   // get image base64 from body. 
-   
-     
-  
-      
-        fs.appendFile('H:\\workplace\\bt1\\backend\\image\\img'+body.id+'.json', JSON.stringify(body.imgsrc), function (err) {
+        fs.writeFile('H:/workplace/bt1/backend/image/img'+body.id+'.json', JSON.stringify(body.imgsrc), function (err) {
           if (err) throw err;
           console.log('Saved!');})
        
     
   // save image base64 to file.
   // push img path to firebase
-  body.imgsrc='H:\\workplace\\bt1\\backend\\image\\img'+body.id+'.txt';
+  body.imgsrc='H:/workplace/bt1/backend/image/img'+body.id+'.json';
   pushUserToFirebase(body);
   // fs.access('mynewfile3.json', fs.F_OK, (err) => {
   //   if (err) {

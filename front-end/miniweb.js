@@ -92,7 +92,7 @@ function Save(event) {
     object.description = desvalue;
     
     object.id=document.currentEditIndex;
-    object.imgsrc='H:\\workplace\\bt1\\backend\\image\\img'+object.id+'.json';
+    object.imgsrc='H:/workplace/bt1/backend/image/img'+object.id+'.json';
     debugger
     $.ajax({
         method: 'PUT',
