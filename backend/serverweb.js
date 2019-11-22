@@ -23,23 +23,13 @@ admin.initializeApp({
 let db = admin.firestore();
 
 function pushUserToFirebase(data) {
-   //.doc('users');
-  // let docRef = db.doc('users');
   let docRef = db.collection('user_list');
-  // console.log(data);
   console.log('Push Done');
-  docRef.doc(data.id.toString()).set(data);
+  console.log(data);
+  docRef.doc(data.ProductCode.toString()).set(data);
 };
 
-// docRef.doc(id.toString()).get()
 
-// let setAda = docRef.set({
-//   id: 1,
-//   description: 'Build a simple API - nodejs',
-//   completed: false,
-//   name:'AN'
-// });
-//
 var Node = new Node();
 var BST = new BinarySearchTree();
 
@@ -52,7 +42,6 @@ async function getMarker() {
   const snapshot = await db.collection('user_list').get()
   var i=0;
   snapshot.forEach(doc => {
-    // chèn doc.data() vào todos
     todos[i]=doc.data();
     i++;
   });
@@ -60,22 +49,7 @@ async function getMarker() {
 
 
 }
-//    function getDataFromFirebase(){
-//   let docRef=db.collection('user_list').doc('1');
-// let getDoc = docRef.get()
-// .then(doc => {
-//   if (!doc.exists) {
-//     console.log('No such document!');
-//   } else {
-//     todos[0]=doc.data();
-//     console.log('Get Done');
-//   }
-// })
-// .catch(err => {
-//   console.log('Error getting document', err);
-// });
-//  }
-// getDataFromFirebase();
+
 
 // "To do API Root" sẽ được trả về khi thực hiện get request trên trang home page của ứng dụng  
  app.get('/', function(req, res) {
@@ -88,29 +62,7 @@ app.listen(PORT, function() {
 
  app.get('/todos',function(req,res){
   getMarker();
-  todos.forEach(element => {
-    fs.readFile(element.imgsrc, (err, data) => {
-            if (err) throw err;
-            //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
-          let string = toString(data);
-            element.imgsrc= string ;
-        })
-  });
-  // after get img path
-  // read base64 from img path
-  // return data/
-  
-//   fs.access('mynewfile3.json', fs.F_OK, (err) => {
-//     if (!err) {
-//     fs.readFile('mynewfile3.json', (err, data) => {
-//       if (err) throw err;
-//       //parse nghĩa là parse dữ liệu text của chúng ta từ dạng string quay về dạng object
-//       let jsonObject = JSON.parse(data);
-//       console.log (jsonObject);
-//   })
-// }})
-
-res.send(todos);
+  res.send(todos);
  });
 
  app.get('/todos/:id',function(req,res){
@@ -127,33 +79,8 @@ res.send(todos);
   if (body === null) {
     return;
   }
-  // get image base64 from body. 
-        fs.writeFile('H:/workplace/bt1/backend/image/img'+body.id+'.json', JSON.stringify(body.imgsrc), function (err) {
-          if (err) throw err;
-          console.log('Saved!');})
-       
-    
-  // save image base64 to file.
-  // push img path to firebase
-  body.imgsrc='H:/workplace/bt1/backend/image/img'+body.id+'.json';
+ 
   pushUserToFirebase(body);
-  // fs.access('mynewfile3.json', fs.F_OK, (err) => {
-  //   if (err) {
-  //     fs.writeFile('mynewfile3.json', JSON.stringify(body), function (err) {
-  //       if (err) throw err;
-  //       console.log('Saved!');
-  //     });
-  //   }
-  
-  //   fs.appendFile('mynewfile3.json', JSON.stringify(body), function (err) {
-  //     if (err) throw err;
-  //     console.log('Saved!');
-  //   });
-  // })
-  
-  // todos.push(body);
-  // res.json('Added user');
-
 });
 //PUT /todos/:id
 app.put('/todos/:id', function(req, res) {
@@ -203,82 +130,3 @@ app.delete('/todos/:id', function(req, res) {
   let delRef=db.collection('user_list').doc(todoId.toString()).delete();
   console.log('Delete Done');
 });
-//  app.post('/todos', function(req, res) {
-//   var body = req.body; //never trust parameters from the scary internet
-//   if (body === null) {
-//     return;
-//   }
-//   let setDoc = docRef.set(JSON.stringify(body));
-  
-//   todos.push(body);
-//   res.json('Added user');
-// });
-// });
-// GET /todos
-// app.get('/todos', function(req, res) {
-//   var queryParams = req.query;
-//   var filteredTodos = todos;
-//   if (queryParams.hasOwnProperty('search') && queryParams.search.length > 0) {
-//     filteredTodos = _.filter(filteredTodos, function(item) {
-//       return item.description.indexOf(queryParams.search) > -1
-//     });
-//   } else if (queryParams.hasOwnProperty('completed') && queryParams.completed == 'true') {
-//     filteredTodos = _.where(filteredTodos, {
-//       completed: true
-//     });
-//   } else if (queryParams.hasOwnProperty('completed') && queryParams.completed == 'false') {
-//     filteredTodos = _.where(filteredTodos, {
-//       completed: false
-//     });
-//   }
-//   res.json(filteredTodos);
-//  });
- 
-//  app.get('/todos/:id', function(req, res) {
-//   // params được gửi thuộc kiểu string do đó phải convert params về kiểu integer 
-//   var todoId = parseInt(req.params.id, 10);
-//   var matchedTodo = _.findWhere(todos, {id: todoId});
-  
-//   if (matchedTodo) {
-//     res.json(matchedTodo);
-//   } else {
-//     res.status(404).send();
-//   }
-// });
-
-
-// // PUT /todos/:id
-// app.put('/todos/:id', function(req, res) {
-//   var body = _.pick(req.body, 'description','completed','name');
-//   var validAttributes = {}
-
-//   var todoId = parseInt(req.params.id, 10);
-//   var matchedTodo = _.findWhere(todos, {id: todoId});
-
-//   if (!matchedTodo) {
-//     return res.status(404).json();
-//   }
-
-//   if (body.hasOwnProperty('completed') && _.isBoolean(body.completed)) {
-//     validAttributes.completed = body.completed;
-//   } else if (body.hasOwnProperty('completed')){
-//     return res.status(404).json();
-//   }
-
-//   if (body.hasOwnProperty('description') && _.isString(body.description) &&
-//     body.description.trim().length > 0) {
-//     validAttributes.description = body.description;
-//   } else if (body.hasOwnProperty('description')) {
-//     return res.status(404).json();
-//   }
-//   if (body.hasOwnProperty('name') && _.isString(body.name) &&
-//     body.name.trim().length > 0) {
-//     validAttributes.name = body.name;
-//   } else if (body.hasOwnProperty('name')) {
-//     return res.status(404).json();
-//   }
-
-//   _.extend(matchedTodo, validAttributes);
-//   res.json(matchedTodo);
-
-// });
