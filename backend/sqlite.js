@@ -59,11 +59,7 @@ db.serialize(() => {
 });
 
 db.serialize();
-db.run(`SELECT * FROM products WHERE ProductCode= 'P03'`, (err,data)=>{
-  
-   console.log(data);
-  
-});
+
 app.get('/todos', function (req, res) {
 
   res.send(todos);
@@ -76,29 +72,33 @@ app.post('/todos', function (req, res) {
   i++;
   res.status(200).json('success');
 });
-app.delete('/todos/:id', function (req, res) {
-  var todoId = parseInt(req.params.id, 10);
-  var matchedTodo = _.findWhere(todos, {
-    id: todoId
-  });
+// app.delete('/todos/:id', function (req, res) {
+//   var todoId = parseInt(req.params.id, 10);
+//   var matchedTodo = _.findWhere(todos, {
+//     id: todoId
+//   });
 
-  if (!matchedTodo) {
-    res.status(404).json({
-      "error": "no todo found with that id"
-    });
-  } else {
-    todos = _.without(todos, matchedTodo);
-    res.json(matchedTodo);
-  }
-  let delRef = db.collection('user_list').doc(todoId.toString()).delete();
-  console.log('Delete Done');
-});
-
+//   if (!matchedTodo) {
+//     res.status(404).json({
+//       "error": "no todo found with that id"
+//     });
+//   } else {
+//     todos = _.without(todos, matchedTodo);
+//     res.json(matchedTodo);
+//   }
+//   let delRef = db.collection('user_list').doc(todoId.toString()).delete();
+//   console.log('Delete Done');
+// });
+var db1=[];
 app.get('/todos/:id', function (req, res) {
+  console.log(typeof(req.params.ProductCode));
   console.log(req.params.ProductCode);
-    var todoID= req.params.ProductCode;
-    console.log(todoID);
-    res.send('success');
+  db.each(`SELECT * FROM products WHERE ProductCode= ${req.params.ProductCode}`, (err,data)=>{
+  db1[0] = JSON.stringify(data);
+    
+   
+ });
+ res.send(db1);
     
     
     // if (matchedTodo) {
