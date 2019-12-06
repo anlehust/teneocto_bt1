@@ -55,13 +55,12 @@ db.serialize(() => {
 
 
     });
-    
+
 });
 
 db.serialize();
 
 app.get('/todos', function (req, res) {
-
   res.send(todos);
 });
 
@@ -72,6 +71,79 @@ app.post('/todos', function (req, res) {
   i++;
   res.status(200).json('success');
 });
+app.put('/todos/:id', function (req, res) {
+  // console.log(req);
+  // console.log(typeof(req.body.ProductName));
+  let data = [req.body.ProductName, req.body.ProviderName, req.body.Price, req.body.Quantity, req.body.TypeOfProduc, req.body.ProductCode];
+  let sql = `UPDATE products ` +
+    `SET ProductName ='` + req.body.ProductName + `'` +
+    `, ProviderName ='` + req.body.ProviderName + `'` +
+    `, Price ='` + req.body.Price + `'` +
+    `, Quantity ='` + req.body.Quantity + `'` +
+    `, TypeOfProduct ='` + req.body.TypeOfProduct + `'` +
+    ` WHERE ProductCode='` + req.body.ProductCode + `'`;
+  // let sql = `UPDATE products 
+  // SET ProductName = ?
+  // , ProviderName =?
+  // , Price =?
+  // , Quantity =?
+  // , TypeOfProduct =?
+  //  WHERE ProductCode=?`;
+  // let sql= ` UPDATE products
+  // SET ProductCode = 3 
+  // WHERE StudentId = 6;`
+  db.run(sql, (result, err) => {
+    i = 0;
+    db.each(`SELECT * FROM products`, (err, row) => {
+      if (err) {
+        throw err;
+      }
+
+
+      todos[i] = JSON.stringify(row);
+      i++;
+    });
+    res.status(200).json({
+      Success: true
+    });
+  });
+  // db.run(sql,data, function(err){
+  //   console.log('done');
+  //   if (err) {
+  //     return console.error(err.message);
+  //   }
+  //   console.log(sql);
+  // });
+
+})
+app.delete('/todos', function (req, res) {
+
+  if (1) {
+    (req.body).forEach(element => {
+      let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
+      console.log(sql);
+      db.run(sql, (err) => {
+        if (err) throw err;
+      })
+    });
+
+
+    db.each(`SELECT * FROM products`, (err, row) => {
+      if (err) {
+        throw err;
+      }
+
+      todos[i] = JSON.stringify(row);
+      i++;
+      console.log(i);
+    });
+
+    res.status(200).json({
+      Success: true
+    });
+  };
+
+})
 // app.delete('/todos/:id', function (req, res) {
 //   var todoId = parseInt(req.params.id, 10);
 //   var matchedTodo = _.findWhere(todos, {
@@ -89,24 +161,11 @@ app.post('/todos', function (req, res) {
 //   let delRef = db.collection('user_list').doc(todoId.toString()).delete();
 //   console.log('Delete Done');
 // });
-var db1=[];
 app.get('/todos/:id', function (req, res) {
-  console.log(typeof(req.params.ProductCode));
-  console.log(req.params.ProductCode);
-  db.each(`SELECT * FROM products WHERE ProductCode= ${req.params.ProductCode}`, (err,data)=>{
-  db1[0] = JSON.stringify(data);
-    
-   
- });
- res.send(db1);
-    
-    
-    // if (matchedTodo) {
-    //      res.send(matchedTodo);
-    //    } else {
-    //      res.status(404).send();
-    //    }
-    
+  let sql = `SELECT * FROM products WHERE ProductCode= "` + req.params.id + `"`;
+  db.each(sql, (err, data) => {
+    res.send(JSON.stringify(data));
+  });
 })
 // app.get('/todos',function(req,res){
 // var todos=[];
