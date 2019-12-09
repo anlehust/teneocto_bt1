@@ -25,52 +25,82 @@ const sqlite3 = require('sqlite3').verbose();
 //   }
 // }
 // open the database connection
-let db = new sqlite3.Database(':memory:', (err) => {
+let db = new sqlite3.Database('./database.sqlite', (err) => {
   if (err) {
     console.error(err.message);
   }
 });
 var todos = [];
 var i = 0;
+var i1 = 0;
 db.serialize(() => {
-  db.run('CREATE TABLE products(ProductCode text, ProductName text, ProviderName text, Price text, Quantity text, TypeOfProduct text)') /*});*/
+  // db.run('CREATE TABLE products(ProductCode text, ProductName text, ProviderName text, Price text, Quantity text, TypeOfProduct text)') /*});*/
 
-    .run(`INSERT INTO products(ProductCode, ProductName , ProviderName , Price , Quantity, TypeOfProduct)
-            VALUES('P01','Laptop','HP','1000','100','01'),
-            ('P02','IPhone','SS','2000','100','03'),
-            ('P03','Laptop','HP','1000','100','01')`)
-    .each(`SELECT * FROM products`, (err, row) => {
-      if (err) {
-        throw err;
-      }
-
-
-      todos[i] = JSON.stringify(row);
-      console.log(todos[i]);
-
-      i++;
-
-      // todos[i].productcode=(todos[i].productcode).concat(row.productcode);
-      // i++;
+  //   .run(`INSERT INTO products(ProductCode, ProductName , ProviderName , Price , Quantity, TypeOfProduct)
+  //           VALUES('P01','Laptop','HP','1000','100','01'),
+  //           ('P02','IPhone','SS','2000','100','03'),
+  //           ('P03','Laptop','HP','1000','100','01')`)
+  db.each(`SELECT * FROM products`, (err, row) => {
+    if (err) {
+      throw err;
+    }
 
 
-    });
+    todos[i] = JSON.stringify(row);
+
+    i++;
+    // while(i1!=0){
+    //   todos.pop();
+    //   i1--;
+    // }
+
+  })
+
 
 });
 
-db.serialize();
 
+
+
+db.serialize();
+GetProduct = function () {
+  return new Promise((resolve, reject) => {
+    i = 0;
+    todos=[];
+    db.each(`SELECT * FROM products`, (err, row) => {
+      if (err) {
+        reject(err);
+      }
+      todos[i] = JSON.stringify(row);
+      i++;
+      console.log(i);
+    }, (err, count) => {
+      console.log('finish: ' + i);
+      console.log(todos);
+      resolve(todos);
+    });
+  })
+}
 app.get('/todos', function (req, res) {
-  res.send(todos);
+  GetProduct().then(() => {
+    res.send(todos);
+  });
 });
 
 app.post('/todos', function (req, res) {
-  todos[i] = JSON.stringify(req.body);
-  console.log(todos[i]);
-  console.log(i);
-  i++;
-  res.status(200).json('success');
+  // todos[i] = JSON.stringify(req.body);
+  // console.log(todos[i]);
+  // console.log(i);
+  // i++;
+  db.run(`INSERT INTO products(ProductCode, ProductName , ProviderName , Price , Quantity, TypeOfProduct)` +
+    `VALUES('` + req.body.ProductCode + `','` + req.body.ProductName + `','` + req.body.ProviderName + `','` + req.body.Price + `','` + req.body.Quantity + `','` + req.body.TypeOfProduc + `')`, (result, err) => {
+      res.status(200).json('success');
+    })
+
+
 });
+
+
 app.put('/todos/:id', function (req, res) {
   // console.log(req);
   // console.log(typeof(req.body.ProductName));
@@ -116,72 +146,31 @@ app.put('/todos/:id', function (req, res) {
   // });
 
 })
+Delete = function(){
+  return new Promise((resolve, reject) => {
+   
+})}
 app.delete('/todos', function (req, res) {
+  console.log(req.body);
+  (req.body).forEach(element => {
+    let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
+    console.log(sql);
 
-  if (1) {
-    (req.body).forEach(element => {
-      let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
-      console.log(sql);
-      db.run(sql, (err) => {
-        if (err) throw err;
-      })
-    });
+    db.run(sql, (err) => {
+      if (err) throw err;
+    })
+    i1++;
+  });
 
+  res.status(200).json({
+    Success: true
+  });
 
-    db.each(`SELECT * FROM products`, (err, row) => {
-      if (err) {
-        throw err;
-      }
-
-      todos[i] = JSON.stringify(row);
-      i++;
-      console.log(i);
-    });
-
-    res.status(200).json({
-      Success: true
-    });
-  };
 
 })
-// app.delete('/todos/:id', function (req, res) {
-//   var todoId = parseInt(req.params.id, 10);
-//   var matchedTodo = _.findWhere(todos, {
-//     id: todoId
-//   });
-
-//   if (!matchedTodo) {
-//     res.status(404).json({
-//       "error": "no todo found with that id"
-//     });
-//   } else {
-//     todos = _.without(todos, matchedTodo);
-//     res.json(matchedTodo);
-//   }
-//   let delRef = db.collection('user_list').doc(todoId.toString()).delete();
-//   console.log('Delete Done');
-// });
 app.get('/todos/:id', function (req, res) {
   let sql = `SELECT * FROM products WHERE ProductCode= "` + req.params.id + `"`;
   db.each(sql, (err, data) => {
     res.send(JSON.stringify(data));
   });
 })
-// app.get('/todos',function(req,res){
-// var todos=[];
-// var i=0;
-// db.each(`SELECT message FROM greetings`, (err, row) => {
-//     if (err){
-//       throw err;
-//     }
-//     console.log(row.message);
-//     todos[i]=row.message;
-//     console.log ('todos'+i+todos[i]);
-//     i++;
-//   });
-// });
-// app.post('/todos',function(){
-// db.run(`INSERT INTO greetings(message)
-//           VALUES('Hi'),
-//                 ('Hello'),
-//                 ('Welcome')`)});
