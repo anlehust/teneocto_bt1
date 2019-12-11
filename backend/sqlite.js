@@ -143,17 +143,22 @@ app.put('/todos/:id', function (req, res) {
 })
 Delete = function(ProductCodes){
   return new Promise((resolve, reject) => {
+    let isDone = 1;
+    console.log(ProductCodes.length );
     (ProductCodes).forEach(element => {
       let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
       console.log(sql);
-  
+      
       db.run(sql, (err) => {
         if (err) reject(err);
+        
+          if (isDone==ProductCodes.length) resolve('done');
+          else isDone ++;
       })
-      i1++;
-    }),(err,count)=>{
-      resolve('done');
-    };
+      // i1++;
+    })
+     
+    ;
 //     i = 0;
 //     todos=[];
 //     db.each(`SELECT * FROM products ORDER BY ProductCode ASC`, (err, row) => {
@@ -217,3 +222,86 @@ GetProductByProperties= function(props){
           res.send(todos);
         });
     })
+
+
+
+
+
+    let db1 = new sqlite3.Database('./databasebaocao.sqlite', (err) => {
+      if (err) {
+        console.error(err.message);
+      }
+    });
+    var record = [];
+var i_rc;
+
+db1.serialize(() => { 
+    db1.each(`SELECT * FROM record ORDER BY Month ASC`, (err, row) => {
+    if (err) {
+      throw err;
+    }
+    record[i_rc] = JSON.stringify(row);
+    console.log(record[i_rc]);
+    i_rc++;
+  })
+});
+db1.serialize();
+// db.serialize();
+GetData = function () {
+    return new Promise((resolve, reject) => {
+      i_rc = 0;
+      record=[];
+      db1.each(`SELECT * FROM record ORDER BY Month ASC`, (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        record[i_rc] = JSON.stringify(row);
+        i_rc++;
+      }, (err, count) => {
+        resolve(record);
+      });
+    })
+  }
+  app.get('/record', function (req, res) {
+    GetData().then(() => {
+      res.send(record);
+    });
+  });
+  app.post('/record', function (req, res) {
+      console.log(req.body.QuantitySold);
+    db1.run(`INSERT INTO record(Month, TypeOfProduct, QuantitySold)` +
+      `VALUES('` + req.body.Month + `','` + req.body.TypeOfProduct +`',`+req.body.QuantitySold+ `)`, (result, err) => {
+        console.log(result);
+        //console.log(err);
+        if(result.code='SQLITE_CONSTRAINT') res.status(200).json('error');
+         else res.status(200).json('success');
+        
+      })
+  
+  
+  });
+  GetRecordByProperties= function(props){
+    return new Promise((resolve, reject) => {
+       record =[];
+       i_rc=0;
+      let sql = `SELECT * FROM record WHERE Month like "%` + props.Month + `%"`
+      +`AND TypeOfProduct like"%`+props.TypeOfProduct+`%"`
+      +`AND QuantitySold like"%`+props.QuantitySold+`%"`
+      +`ORDER BY TypeOfProduct ASC`
+      
+      db1.each(sql, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+        record[i_rc]=JSON.stringify(data);
+        i_rc++;
+      },(err, count) => {
+        resolve(record);
+      });
+      })}
+      app.get('/recordbyprop/:props',function(req,res){
+          var prop = JSON.parse(req.params.props);
+          GetRecordByProperties(prop).then(() => {
+            res.send(record);
+          });
+      })
