@@ -40,14 +40,14 @@ db.serialize(() => {
   //           VALUES('P01','Laptop','HP','1000','100','01'),
   //           ('P02','IPhone','SS','2000','100','03'),
   //           ('P03','Laptop','HP','1000','100','01')`)
-  db.each(`SELECT * FROM products`, (err, row) => {
+  db.each(`SELECT * FROM products ORDER BY ProductCode ASC`, (err, row) => {
     if (err) {
       throw err;
     }
 
 
     todos[i] = JSON.stringify(row);
-
+    console.log(todos[i]);
     i++;
     // while(i1!=0){
     //   todos.pop();
@@ -67,16 +67,13 @@ GetProduct = function () {
   return new Promise((resolve, reject) => {
     i = 0;
     todos=[];
-    db.each(`SELECT * FROM products`, (err, row) => {
+    db.each(`SELECT * FROM products ORDER BY ProductCode ASC`, (err, row) => {
       if (err) {
         reject(err);
       }
       todos[i] = JSON.stringify(row);
       i++;
-      console.log(i);
     }, (err, count) => {
-      console.log('finish: ' + i);
-      console.log(todos);
       resolve(todos);
     });
   })
@@ -93,7 +90,7 @@ app.post('/todos', function (req, res) {
   // console.log(i);
   // i++;
   db.run(`INSERT INTO products(ProductCode, ProductName , ProviderName , Price , Quantity, TypeOfProduct)` +
-    `VALUES('` + req.body.ProductCode + `','` + req.body.ProductName + `','` + req.body.ProviderName + `','` + req.body.Price + `','` + req.body.Quantity + `','` + req.body.TypeOfProduc + `')`, (result, err) => {
+    `VALUES('` + req.body.ProductCode + `','` + req.body.ProductName + `','` + req.body.ProviderName + `','` + req.body.Price + `','` + req.body.Quantity + `','` + req.body.TypeOfProduct + `')`, (result, err) => {
       res.status(200).json('success');
     })
 
@@ -128,8 +125,6 @@ app.put('/todos/:id', function (req, res) {
       if (err) {
         throw err;
       }
-
-
       todos[i] = JSON.stringify(row);
       i++;
     });
@@ -146,31 +141,79 @@ app.put('/todos/:id', function (req, res) {
   // });
 
 })
-Delete = function(){
+Delete = function(ProductCodes){
   return new Promise((resolve, reject) => {
-   
+    (ProductCodes).forEach(element => {
+      let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
+      console.log(sql);
+  
+      db.run(sql, (err) => {
+        if (err) reject(err);
+      })
+      i1++;
+    }),(err,count)=>{
+      resolve('done');
+    };
+//     i = 0;
+//     todos=[];
+//     db.each(`SELECT * FROM products ORDER BY ProductCode ASC`, (err, row) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       todos[i] = JSON.stringify(row);
+//       i++;
+//     }, (err, count) => {
+//       resolve(todos);
+// })
 })}
 app.delete('/todos', function (req, res) {
-  console.log(req.body);
-  (req.body).forEach(element => {
-    let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
-    console.log(sql);
+ 
+Delete(req.body).then(()=>{res.status(200).json({
+  Success: true
+   // console.log(req.body);
+  // (req.body).forEach(element => {
+  //   let sql = `DELETE  FROM products WHERE ProductCode='` + element + `'`;
+  //   console.log(sql);
 
-    db.run(sql, (err) => {
-      if (err) throw err;
+  //   db.run(sql, (err) => {
+  //     if (err) throw err;
+  //   })
+  //   i1++;
+  // });
+});})
+  
+
+
+})
+GetProductByProperties= function(props){
+  return new Promise((resolve, reject) => {
+     todos =[];
+     i=0;
+    let sql = `SELECT * FROM products WHERE ProductCode like "%` + props.productcode + `%"`
+    +`AND ProductName like"%`+props.productname+`%"`
+    +`AND ProviderName like"%`+props.providername+`%"`
+    +`AND Price like"%`+props.price+`%"`
+    +`AND Quantity like"%`+props.quantity+`%"`
+    +`AND TypeOfProduct like"%`+props.typeofproduct+`%"`;
+    db.each(sql, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      todos[i]=JSON.stringify(data);
+      i++;
+    },(err, count) => {
+      resolve(todos);
+    });
+    })}
+    app.get('/todos/:id', function (req, res) {
+      let sql = `SELECT * FROM products WHERE ProductCode= "` + req.params.id + `"`;
+      db.each(sql, (err, data) => {
+        res.send(JSON.stringify(data));
+      });
     })
-    i1++;
-  });
-
-  res.status(200).json({
-    Success: true
-  });
-
-
-})
-app.get('/todos/:id', function (req, res) {
-  let sql = `SELECT * FROM products WHERE ProductCode= "` + req.params.id + `"`;
-  db.each(sql, (err, data) => {
-    res.send(JSON.stringify(data));
-  });
-})
+    app.get('/todosbyprop/:props',function(req,res){
+        var prop = JSON.parse(req.params.props);
+        GetProductByProperties(prop).then(() => {
+          res.send(todos);
+        });
+    })
