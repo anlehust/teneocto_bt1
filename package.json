@@ -24,7 +24,7 @@
     "node": "^13.3.0",
     "npm-git-install": "^0.3.0",
     "sqlite3": "^4.1.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {},
   "description": ""
